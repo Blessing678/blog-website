@@ -456,11 +456,49 @@ if (adminSettingsForm) {
 
 displayBlogs();
 displaySelectedPost();
+// Load and display blog posts FROM JSONBIN
+async function displayPosts() {
+  const blogContainer = document.getElementById('blogContainer'); // or 'blog-container' check your html
+  if (!blogContainer) return;
 
-// Load and display blog posts
-function displayPosts() {
-  const blogContainer = document.getElementById('blogContainer');
-  const posts = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+  blogContainer.innerHTML = '<p>Loading blogs...</p>';
+
+  try {
+    const posts = await getPosts(); // <-- THIS IS THE KEY. GET FROM JSONBIN
+
+    if (posts.length === 0) {
+      blogContainer.innerHTML = '<p>No blog posts yet</p>';
+      return;
+    }
+
+    blogContainer.innerHTML = posts.map(post => `
+      <div class="post-card">
+        <img src="${post.image}" alt="${post.title}" />
+        <h3>${post.title}</h3>
+        <p>${post.content.substring(0, 100)}...</p>
+        <a href="post.html?id=${post.id}">Read More</a>
+      </div>
+    `).join('');
+
+  } catch (error) {
+    console.error("Error loading posts:", error);
+    blogContainer.innerHTML = '<p>Error loading blogs</p>';
+  }
+}
+
+// Run when page loads
+document.addEventListener('DOMContentLoaded', displayPosts);
+
+
+
+
+
+
+
+
+
+
+
 
   if (posts.length === 0) {
     blogContainer.innerHTML = '<p>No blog posts yet</p>';
@@ -475,7 +513,7 @@ function displayPosts() {
       <a href="post.html?id=${post.id}">Read More</a>
     </div>
   `).join('');
-}
+
 
 // Run when page loads
 document.addEventListener('DOMContentLoaded', displayPosts);
