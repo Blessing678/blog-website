@@ -1,205 +1,87 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin | My Blog</title>
+    <title>Admin - Donavan's Blog</title>
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body class="admin-page">
-
-<header class="header">
-    <div class="container nav">
-        <a href="index.html" class="logo">My<span>Blog</span></a>
-
-```
-    <nav>
-        <a href="index.html">View Website</a>
-    </nav>
-</div>
-```
-
-</header>
-
 <div class="admin-container">
 
-```
-<!-- LOGIN -->
-
-<div id="loginBox" class="admin-card">
-
-    <h1>Admin Login</h1>
-    <p>Login to manage your blog posts.</p>
-
-    <form id="loginForm">
-
-        <label>Username</label>
-        <input
-            type="text"
-            id="username"
-            placeholder="Enter username"
-            required
-        >
-
-        <label>Password</label>
-        <div class="password-wrap">
-            <input
-                type="password"
-                id="password"
-                placeholder="Enter password"
-                required
-            >
-            <button
-                type="button"
-                id="togglePassword"
-                class="toggle-password-btn"
-                aria-label="Show password"
-            >
-                Show
-            </button>
-        </div>
-
-        <button type="submit" class="btn full">
-            Login
-        </button>
-
+    <!-- LOGIN FORM -->
+    <div id="loginForm" class="admin-card">
+        <h2>Admin Login</h2>
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button onclick="login()">Login</button>
         <p id="loginMessage" class="message"></p>
+    </div>
 
-    </form>
+    <!-- DASHBOARD - Hidden until login -->
+    <div id="dashboard" class="dashboard hidden">
 
-</div>
+        <!-- SETTINGS -->
+        <div class="admin-card settings-card">
+            <h2>Settings</h2>
+            <input type="text" id="newUsername" placeholder="New Username">
+            <input type="password" id="newPassword" placeholder="New Password">
+            <button onclick="saveCredentials()">Save Credentials</button>
+            <p id="settingsMessage" class="message"></p>
+        </div>
+<!-- CREATE BLOG -->
+        <div class="admin-card">
+            <h2>Create New Blog</h2>
+            <form id="blogForm">
+                <input type="text" id="blogTitle" placeholder="Blog Title" required>
+                <textarea id="blogContent" placeholder="Blog Content" rows="6" required></textarea>
 
+                <label>Upload Image:</label>
+                <input type="file" id="postImage" accept="image/*">
+                <img id="imagePreview" style="max-width:200px; display:none; margin-top:10px; border-radius:8px;">
 
-<!-- DASHBOARD -->
-
-<div id="dashboard" class="dashboard hidden">
-
-    <div class="dashboard-header">
-
-        <div>
-            <p class="small-title">ADMIN DASHBOARD</p>
-            <h1>Manage Your Blog</h1>
+                <button type="submit">Publish Blog</button>
+            </form>
+            <p id="formMessage" class="message"></p>
         </div>
 
-        <button id="logoutBtn" class="logout-btn">
-            Logout
-        </button>
+        <!-- BLOG LIST -->
+        <div class="admin-card">
+            <h2>Your Blog Posts</h2>
+            <div id="adminPosts"></div>
+        </div>
 
+        <button onclick="logout()" style="background:red;">Logout</button>
+    </div> </div> <script src="app.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+        <!-- CREATE BLOG -->
+        <div class="admin-card">
+            <h2 id="formTitle">Create New Blog</h2>
+            <form id="blogForm">
+                <input type="text" id="blogTitle" placeholder="Blog Title" required>
+                <textarea id="blogContent" placeholder="Blog Content" rows="6" required></textarea>
+
+                <!-- IMAGE UPLOAD ADDED HERE -->
+                <label>Upload Image:</label>
+                <input type="file" id="postImage" accept="image/*">
+                <img id="imagePreview" style="max-width:200px; display:none; margin-top:10px;">
+
+                <button type="submit">Publish Blog</button>
+            </form>
+            <p id="formMessage" class="message"></p>
+        </div>
     </div>
-
-
-    <!-- ADMIN SETTINGS -->
-
-    <div class="admin-card settings-card">
-
-        <h2>Admin Account Settings</h2>
-
-        <form id="adminSettingsForm">
-
-            <label>Username</label>
-            <input
-                type="text"
-                id="adminUsername"
-                placeholder="Enter admin username"
-                required
-            >
-
-            <label>Password</label>
-            <input
-                type="text"
-                id="adminPassword"
-                placeholder="Enter admin password"
-                required
-            >
-
-            <button type="submit" class="btn">
-                Save Credentials
-            </button>
-
-            <p id="settingsMessage" class="message"></p>
-
-        </form>
-
-    </div>
-
-    <!-- CREATE BLOG -->
-
-    <div class="admin-card">
-
-        <h2 id="formTitle">Create New Blog</h2>
-
-        <form id="blogForm">
-
-            <input type="hidden" id="editId">
-
-            <label>Blog Title</label>
-            <input
-                type="text"
-                id="blogTitle"
-                placeholder="Enter blog title"
-                required
-            >
-
-            <label>Category</label>
-            <input
-                type="text"
-                id="blogCategory"
-                placeholder="Example: Travel"
-                required
-            >
-
-            <label>Blog Image</label>
-            <input
-                type="file"
-                id="blogImage"
-                accept="image/*"
-            >
-
-            <div id="imagePreview" class="image-preview"></div>
-
-            <label>Blog Content</label>
-            <textarea
-                id="blogContent"
-                rows="10"
-                placeholder="Write your blog here..."
-                required
-            ></textarea>
-
-            <button type="submit" class="btn">
-                <span id="saveText">Publish Blog</span>
-            </button>
-
-            <button
-                type="button"
-                id="cancelEdit"
-                class="cancel-btn hidden"
-            >
-                Cancel Edit
-            </button>
-
-        </form>
-
-    </div>
-
-
-    <!-- BLOG LIST -->
-
-    <div class="admin-card">
-
-        <h2>Your Blog Posts</h2>
-
-        <div id="adminPosts"></div>
-
-    </div>
-
-</div>
-```
-
 </div>
 
 <script src="app.js"></script>
-
 </body>
 </html>

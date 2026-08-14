@@ -1,3 +1,53 @@
+// LOGIN SYSTEM
+let ADMIN_USER = 'admin';
+let ADMIN_PASS = 'admin123';
+
+function login() {
+    const user = document.getElementById('username').value;
+    const pass = document.getElementById('password').value;
+
+    if(user === ADMIN_USER && pass === ADMIN_PASS) {
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('dashboard').classList.remove('hidden');
+    } else {
+        document.getElementById('loginMessage').innerText = "Wrong username or password!";
+    }
+}
+
+function logout() {
+    document.getElementById('loginForm').style.display = 'block';
+    document.getElementById('dashboard').classList.add('hidden');
+}
+
+// IMAGE PREVIEW
+document.getElementById('postImage').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if(file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('imagePreview').src = e.target.result;
+            document.getElementById('imagePreview').style.display = 'block';
+        }
+        reader.readAsDataURL(file);
+    }
+});
+
+// SAVE BLOG - we will connect this to jsonbin next
+document.getElementById('blogForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    alert("Blog submitted! Next we connect to jsonbin");
+});
+
+
+
+
+
+
+
+
+
+
+
 /*
 CUSTOMER BLOG WEBSITE
 Demo Admin Login:
