@@ -5,14 +5,16 @@ Username: admin
 Password: 12345
 */
 
-const STORAGE_KEY = "customerBlogPosts";
+// JSONBIN SETUP - THIS IS THE DATABASE
+const BIN_ID = "6a7eada8da38895dfee2ffc7";
+const MASTER_KEY = "PASTE_YOUR_MASTER_KEY_HERE"; // Get this from JSONBin > API KEYS
+const API_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}/latest`;
+
 const ADMIN_KEY = "blogAdminLoggedIn";
 const ADMIN_USERNAME_KEY = "blogAdminUsername";
 const ADMIN_PASSWORD_KEY = "blogAdminPassword";
-const SELECTED_POST_KEY = "selectedBlog";
-const DEFAULT_ADMIN_USERNAME = "Donavan";
-const DEFAULT_ADMIN_PASSWORD = "123456";
-let selectedImage = "";
+const ADMIN_USERNAME = "Donavan";
+const ADMIN_PASSWORD = "123456";
 
 function getAdminCredentials() {
     const username = localStorage.getItem(ADMIN_USERNAME_KEY) || DEFAULT_ADMIN_USERNAME;
@@ -37,31 +39,36 @@ function saveAdminCredentials(username, password) {
     localStorage.setItem(ADMIN_PASSWORD_KEY, cleanPassword);
 }
 
-function getPosts() {
-    const posts = localStorage.getItem(STORAGE_KEY);
-
-    if (!posts) {
-        return [];
-    }
-
-    try {
-        return JSON.parse(posts);
-    } catch (error) {
-        return [];
-    }
+async function getPosts() {
+  try {
+    const res = await fetch(API_URL, {
+      headers: { "X-Master-Key": MASTER_KEY }
+    });
+    const data = await res.json();
+    return data.record; // this is your array from JSONBin
+  } catch (error) {
+    console.log("Error loading posts", error);
+    return [];
+  }
 }
 
-function savePosts(posts) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+
+async function savePosts(posts) {
+  try {
+    await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Master-Key": MASTER_KEY
+      },
+      body: JSON.stringify(posts)
+    });
+  } catch (error) {
+    console.log("Error saving posts", error);
+  }
 }
 
-function escapeHTML(text = "") {
-    const div = document.createElement("div");
-    div.textContent = String(text);
-    return div.innerHTML;
-}
-
-function displayBlogs() {
+ async function displayBlogs() {
     const container = document.getElementById("blogContainer");
 
     if (!container) {
@@ -332,6 +339,20 @@ function displayAdminPosts() {
         container.appendChild(div);
     });
 }
+async function savePosts(posts) {
+  try {
+    await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Master-Key": MASTER_KEY
+      },
+      body: JSON.stringify(posts)
+    });
+  } catch (error) {
+    console.log("Error saving posts", error);
+  }
+}
 
 function editPost(id) {
     const posts = getPosts();
@@ -361,18 +382,18 @@ function editPost(id) {
     });
 }
 
-function deletePost(id) {
-    const answer = confirm("Are you sure you want to delete this blog?");
+async function deletePost(id) {
+  const answer = confirm("Are you sure you want to delete this post?");
 
-    if (!answer) {
-        return;
-    }
+  if (!answer) {
+    return;
+  }
 
-    let posts = getPosts();
-    posts = posts.filter((post) => post.id !== id);
+  let posts = await getPosts(); // <- added await
+  posts = posts.filter((post) => post.id !== id);
 
-    savePosts(posts);
-    displayAdminPosts();
+  await savePosts(posts); // <- this is fine now
+  displayAdminPosts();
 }
 
 function resetBlogForm() {
@@ -435,3 +456,27 @@ if (adminSettingsForm) {
 
 displayBlogs();
 displaySelectedPost();
+
+// Load and display blog posts
+function displayPosts() {
+  const blogContainer = document.getElementById('blogContainer');
+  const posts = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+  if (posts.length === 0) {
+    blogContainer.innerHTML = '<p>No blog posts yet</p>';
+    return;
+  }
+
+  blogContainer.innerHTML = posts.map(post => `
+    <div class="post-card">
+      <img src="${post.image}" alt="${post.title}" />
+      <h3>${post.title}</h3>
+      <p>${post.content.substring(0, 100)}...</p>
+      <a href="post.html?id=${post.id}">Read More</a>
+    </div>
+  `).join('');
+}
+
+// Run when page loads
+document.addEventListener('DOMContentLoaded', displayPosts);
+
