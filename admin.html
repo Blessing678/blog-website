@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin | My Blog</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="admin-page">
+
+<header class="header">
+    <div class="container nav">
+        <a href="index.html" class="logo">My<span>Blog</span></a>
+
+```
+    <nav>
+        <a href="index.html">View Website</a>
+    </nav>
+</div>
+```
+
+</header>
+
+<div class="admin-container">
+
+```
+<!-- LOGIN -->
+
+<div id="loginBox" class="admin-card">
+
+    <h1>Admin Login</h1>
+    <p>Login to manage your blog posts.</p>
+
+    <form id="loginForm">
+
+        <label>Username</label>
+        <input
+            type="text"
+            id="username"
+            placeholder="Enter username"
+            required
+        >
+
+        <label>Password</label>
+        <div class="password-wrap">
+            <input
+                type="password"
+                id="password"
+                placeholder="Enter password"
+                required
+            >
+            <button
+                type="button"
+                id="togglePassword"
+                class="toggle-password-btn"
+                aria-label="Show password"
+            >
+                Show
+            </button>
+        </div>
+
+        <button type="submit" class="btn full">
+            Login
+        </button>
+
+        <p id="loginMessage" class="message"></p>
+
+    </form>
+
+</div>
+
+
+<!-- DASHBOARD -->
+
+<div id="dashboard" class="dashboard hidden">
+
+    <div class="dashboard-header">
+
+        <div>
+            <p class="small-title">ADMIN DASHBOARD</p>
+            <h1>Manage Your Blog</h1>
+        </div>
+
+        <button id="logoutBtn" class="logout-btn">
+            Logout
+        </button>
+
+    </div>
+
+
+    <!-- ADMIN SETTINGS -->
+
+    <div class="admin-card settings-card">
+
+        <h2>Admin Account Settings</h2>
+
+        <form id="adminSettingsForm">
+
+            <label>Username</label>
+            <input
+                type="text"
+                id="adminUsername"
+                placeholder="Enter admin username"
+                required
+            >
+
+            <label>Password</label>
+            <input
+                type="text"
+                id="adminPassword"
+                placeholder="Enter admin password"
+                required
+            >
+
+            <button type="submit" class="btn">
+                Save Credentials
+            </button>
+
+            <p id="settingsMessage" class="message"></p>
+
+        </form>
+
+    </div>
+
+    <!-- CREATE BLOG -->
+
+    <div class="admin-card">
+
+        <h2 id="formTitle">Create New Blog</h2>
+
+        <form id="blogForm">
+
+            <input type="hidden" id="editId">
+
+            <label>Blog Title</label>
+            <input
+                type="text"
+                id="blogTitle"
+                placeholder="Enter blog title"
+                required
+            >
+
+            <label>Category</label>
+            <input
+                type="text"
+                id="blogCategory"
+                placeholder="Example: Travel"
+                required
+            >
+
+            <label>Blog Image</label>
+            <input
+                type="file"
+                id="blogImage"
+                accept="image/*"
+            >
+
+            <div id="imagePreview" class="image-preview"></div>
+
+            <label>Blog Content</label>
+            <textarea
+                id="blogContent"
+                rows="10"
+                placeholder="Write your blog here..."
+                required
+            ></textarea>
+
+            <button type="submit" class="btn">
+                <span id="saveText">Publish Blog</span>
+            </button>
+
+            <button
+                type="button"
+                id="cancelEdit"
+                class="cancel-btn hidden"
+            >
+                Cancel Edit
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- BLOG LIST -->
+
+    <div class="admin-card">
+
+        <h2>Your Blog Posts</h2>
+
+        <div id="adminPosts"></div>
+
+    </div>
+
+</div>
+```
+
+</div>
+
+<script src="app.js"></script>
+
+</body>
+</html>
