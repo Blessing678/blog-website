@@ -1,85 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Admin - Donavan's Blog</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin - Blog Website</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.admin-container{max-width:600px; margin:0 auto; padding:15px;}
+.admin-card{background:white; padding:15px; border-radius:12px; margin:15px 0; box-shadow:0 2px 8px rgba(0,0,0,0.1);}
+.admin-card input, .admin-card textarea{width:100%; padding:12px; margin:8px 0; border-radius:8px; border:1px solid #ddd; box-sizing:border-box;}
+.admin-card button{width:100%; padding:12px; background:#007bff; color:white; border:none; border-radius:8px; font-weight:bold; cursor:pointer;}
+.hidden{display:none !important;}
+.message{color:green; font-weight:bold; margin-top:8px;}
+</style>
 </head>
-<body class="admin-page">
+<body style="background:#f4f4f4; font-family:sans-serif;">
+
 <div class="admin-container">
 
-    <!-- LOGIN FORM -->
-    <div id="loginForm" class="admin-card">
-        <h2>Admin Login</h2>
-        <input type="text" id="username" placeholder="Username" required>
-        <input type="password" id="password" placeholder="Password" required>
-        <button onclick="login()">Login</button>
-        <p id="loginMessage" class="message"></p>
+  <div id="loginForm" class="admin-card">
+    <h2>Admin Login</h2>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+    <p id="loginMessage" class="message" style="color:red;"></p>
+    <small>Default: admin / admin123</small>
+  </div>
+
+  <div id="dashboard" class="dashboard hidden">
+    
+    <div class="admin-card" style="display:flex; justify-content:space-between; align-items:center;">
+      <h3 style="margin:0;">Dashboard</h3>
+      <button onclick="logout()" style="width:auto; background:red; padding:8px 15px;">Logout</button>
     </div>
 
-    <!-- DASHBOARD - Hidden until login -->
-    <div id="dashboard" class="dashboard hidden">
-
-        <!-- SETTINGS -->
-        <div class="admin-card settings-card">
-            <h2>Settings</h2>
-            <input type="text" id="newUsername" placeholder="New Username">
-            <input type="password" id="newPassword" placeholder="New Password">
-            <button onclick="saveCredentials()">Save Credentials</button>
-            <p id="settingsMessage" class="message"></p>
-        </div>
-<!-- CREATE BLOG -->
-        <div class="admin-card">
-            <h2>Create New Blog</h2>
-            <form id="blogForm">
-                <input type="text" id="blogTitle" placeholder="Blog Title" required>
-                <textarea id="blogContent" placeholder="Blog Content" rows="6" required></textarea>
-
-                <label>Upload Image:</label>
-                <input type="file" id="postImage" accept="image/*">
-                <img id="imagePreview" style="max-width:200px; display:none; margin-top:10px; border-radius:8px;">
-
-                <button type="submit">Publish Blog</button>
-            </form>
-            <p id="formMessage" class="message"></p>
-        </div>
-
-        <!-- BLOG LIST -->
-        <div class="admin-card">
-            <h2>Your Blog Posts</h2>
-            <div id="adminPosts"></div>
-        </div>
-
-        <button onclick="logout()" style="background:red;">Logout</button>
-    </div> </div> <script src="app.js"></script>
-</body>
-</html>
-
-
-
-
-
-
-
-
-
-
-        <!-- CREATE BLOG -->
-        <div class="admin-card">
-            <h2 id="formTitle">Create New Blog</h2>
-            <form id="blogForm">
-                <input type="text" id="blogTitle" placeholder="Blog Title" required>
-                <textarea id="blogContent" placeholder="Blog Content" rows="6" required></textarea>
-
-                <!-- IMAGE UPLOAD ADDED HERE -->
-                <label>Upload Image:</label>
-                <input type="file" id="postImage" accept="image/*">
-                <img id="imagePreview" style="max-width:200px; display:none; margin-top:10px;">
-
-                <button type="submit">Publish Blog</button>
-            </form>
-            <p id="formMessage" class="message"></p>
-        </div>
+    <div class="admin-card settings-card">
+      <h3>Settings</h3>
+      <input type="text" id="newUsername" placeholder="New Username">
+      <input type="password" id="newPassword" placeholder="New Password">
+      <button onclick="saveCredentials()" style="background:#28a745;">Save Credentials</button>
+      <p id="settingsMessage" class="message"></p>
     </div>
+
+    <div class="admin-card">
+      <h3>Create New Blog</h3>
+      <form id="blogForm">
+        <input type="text" id="blogTitle" placeholder="Blog Title" required>
+        <textarea id="blogContent" placeholder="Blog Content" rows="6" required></textarea>
+        <label>Upload Image</label>
+        <input type="file" id="postImage" accept="image/*">
+        <img id="imagePreview" style="max-width:100%; display:none; margin-top:10px; border-radius:8px;">
+        <button type="submit">Publish Blog</button>
+      </form>
+      <p id="formMessage" class="message"></p>
+    </div>
+
+    <div class="admin-card">
+      <h3>Your Blog Posts</h3>
+      <div id="adminPosts"></div>
+    </div>
+
+  </div>
 </div>
 
 <script src="app.js"></script>
